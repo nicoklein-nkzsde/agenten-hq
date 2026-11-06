@@ -21,9 +21,16 @@ STATUS = os.path.join(REPO, "status.json")
 LOCK = os.path.join(BASE, ".lock")
 PUSHLOCK = os.path.join(BASE, ".pushlock")
 LOG = os.path.join(BASE, "hq.log")
-AGENTS = ["chef", "leadtracker", "autohaus", "berater", "aufraeumen"]
+AGENTS = ["chef", "leadtracker", "autohaus", "berater", "aufraeumen", "kartbahn"]
 STATES = ["working", "idle", "error"]
 MARKER = re.compile(r"\[hq:([a-z]+)\]")
+# Themen-Agenten: jede Chat-Session zu diesem Thema läuft über diesen Agenten
+TOPICS = {
+    "kartbahn": re.compile(r"kartbahn|heuchelheim|\bkarts?\b|go-?kart", re.I),
+}
+TOPIC_TEXT = {
+    "kartbahn": ("Kümmert sich um die Kartbahn …", "Wartet auf den nächsten Kartbahn-Chat."),
+}
 PATH_ENV = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
 
 
@@ -223,19 +230,30 @@ def main():
                 d = load()
                 s = d["sessions"].setdefault(sid, {})
                 if ev == "UserPromptSubmit":
-                    m = MARKER.search(data.get("prompt") or "")
+                    prompt = data.get("prompt") or ""
+                    m = MARKER.search(prompt)
                     if m and m.group(1) in AGENTS:
                         s["agent"] = m.group(1)
+                    elif not s.get("agent"):
+                        where = prompt + " " + str(data.get("cwd", ""))
+                        for tid, rx in TOPICS.items():
+                            if rx.search(where):
+                                s["agent"] = tid
+                                break
                     s["state"] = "working"
                     s["since"] = now()
-                    if s.get("agent"):
-                        set_agent(d, s["agent"], "working")
+                    a = s.get("agent")
+                    if a:
+                        set_agent(d, a, "working", TOPIC_TEXT.get(a, (None,))[0])
                 elif ev in ("Stop", "SessionEnd"):
                     s["state"] = "idle"
                     s["since"] = now()
                     a = s.get("agent")
-                    if a and d["agents"].get(a, {}).get("state") != "error":
-                        set_agent(d, a, "idle")
+                    others = [x for x in d["sessions"].values()
+                              if x is not s and x.get("agent") == a and x.get("state") == "working"
+                              and age(x.get("since", "")) < 3 * 3600]
+                    if a and not others and d["agents"].get(a, {}).get("state") != "error":
+                        set_agent(d, a, "idle", TOPIC_TEXT.get(a, (None, None))[1])
                 save(d)
             spawn_push()
         except Exception as e:

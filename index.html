@@ -114,6 +114,9 @@ const AGENTS = [
   { id:'aufraeumen', name:'DER SCHNIPSER', role:'Mac aufräumen', accent:'#c48bff',
     plan:{h:10,m:0,days:[0]}, planText:'sonntags 10:00',
     lore:'Ein Schnipp – und das Chaos liegt im Müllordner. Gelöscht wird nie.' },
+  { id:'kartbahn', name:'DER RENNFAHRER', role:'Kartbahn Heuchelheim · alle Chats dazu', accent:'#ff7a1a',
+    plan:null, planText:'immer, wenn es um die Kartbahn geht',
+    lore:'Kennt jede Kurve und jeden Bremspunkt. Sobald du über die Kartbahn schreibst, gehen die Lichter auf Grün.' },
   { id:'chat', name:'TARS', role:'Live mit Nico im Chat', accent:'#7fe7ff',
     plan:null, planText:'immer, wenn du schreibst',
     lore:'Humor-Einstellung: 75 %. Ehrlichkeit: 90 %.' },
@@ -362,6 +365,49 @@ aufraeumen(c,t,state){
   if(state!=='working') zzz(c,s.bx+12,s.hy-2,t);
 },
 
+/* ---------- DER RENNFAHRER (Kartbahn) ---------- */
+kartbahn(c,t,state){
+  const w = state==='working';
+  // Abendhimmel
+  for(let i=0;i<34;i++){ const k=i/34; c.fillStyle=`rgb(${40+k*190|0},${30+k*80|0},${70-k*20|0})`; c.fillRect(0,i,W,1); }
+  // Tribüne + Flutlicht
+  R(c,0,26,W,10,'#1c1f29'); for(let x=0;x<W;x+=3) for(let y=27;y<35;y+=3) if(rnd(x*y)>.45) P(c,x+1,y,['#ff7a1a','#e8e4da','#3b7bff','#ffd23b'][Math.floor(rnd(x+y)*4)]);
+  R(c,6,4,2,22,'#333'); R(c,3,3,8,3,w?'#fff6c8':'#555'); R(c,118,4,2,22,'#333'); R(c,115,3,8,3,w?'#fff6c8':'#555');
+  // Bande
+  R(c,0,36,W,4,'#e8e4da'); for(let x=0;x<W;x+=8) R(c,x,36,4,4,'#c8102e');
+  // Asphalt-Wand / Boxengasse
+  R(c,0,40,W,18,'#2c2f36');
+  // Startampel
+  R(c,46,4,26,8,'#111'); for(let i=0;i<4;i++){ const on = w ? '#3ddc84' : (i<= (Math.floor(t)%5) ? '#ff2a2a' : '#3a0a0a'); R(c,48+i*6,6,4,4,on); }
+  R(c,58,12,2,14,'#222');
+  // Reifenstapel
+  for(let s=0;s<2;s++) for(let j=0;j<3;j++){ R(c,3+s*12,46+j*4,10,4,'#141414'); R(c,5+s*12,47+j*4,6,2,'#2a2a2a'); }
+  // Zielflagge
+  R(c,112,40,1,18,'#aaa');
+  const wave = w ? Math.floor(t*6)%2 : 0;
+  for(let y=0;y<4;y++) for(let x=0;x<5;x++) R(c,113+x*2,40+y*2+(x%2?wave:0),2,2,(x+y)%2?'#111':'#fff');
+  // Boden mit Curbs
+  R(c,0,58,W,14,'#3a3d44'); for(let x=0;x<W;x+=8) R(c,x,58,4,2,'#c8102e'); for(let x=4;x<W;x+=8) R(c,x,58,4,2,'#fff');
+  if(w) for(let i=0;i<4;i++){ const lx=((t*80+i*37)%140)-10; R(c,lx,63+i*2,8,1,'#ffffff33'); }
+  const OR='#ff7a1a';
+  const o={ suit:OR, legs:OR, boots:'#111', arm:OR, arm2:'#c95a0a', hand:'#111', hand2:'#000', chair:'#111',
+    torso(c,bx){ R(c,bx,32,2,14,'#111'); R(c,bx+4,34,5,2,'#e8e4da'); R(c,bx+4,38,5,1,'#3b7bff'); },
+    head(c,hx,hy,t,w){ R(c,hx,hy+1,10,10,'#f2f2f2'); R(c,hx+1,hy,8,1,'#f2f2f2'); R(c,hx,hy+4,10,1,OR); R(c,hx+5,hy+3,5,4,'#111');
+      P(c,hx+8,hy+4,w?'#7ff':'#456'); R(c,hx+2,hy+10,7,2,'#ccc'); } };
+  const s=body(c,t,state,o);
+  desk(c,'#3a3d44');
+  monitor(c,state,t,(c,x,y,w,h,t)=>{
+    // Streckenplan mit fahrendem Kart
+    R(c,x+3,y+3,19,1,'#888'); R(c,x+3,y+12,19,1,'#888'); R(c,x+2,y+4,1,8,'#888'); R(c,x+22,y+4,1,8,'#888');
+    const p=(t*0.4)%1, per=19*2+8*2; let d=p*per, kx, ky;
+    if(d<19){kx=x+3+d;ky=y+3}else if(d<27){kx=x+22;ky=y+3+(d-19)}else if(d<46){kx=x+22-(d-27);ky=y+12}else{kx=x+2;ky=y+12-(d-46)}
+    R(c,kx-1,ky-1,3,3,'#ff7a1a');
+    R(c,x+9,y+6,7,4,'#111'); R(c,x+10,y+7,Math.floor((t*3)%6),2,'#3ddc84');
+  },'#ff7a1a');
+  arms(c,t,s,o);
+  if(!w) zzz(c,s.bx+12,s.hy-2,t);
+},
+
 /* ---------- TARS (Interstellar: Gargantua im Fenster) ---------- */
 chat(c,t,state,extra){
   R(c,0,0,W,58,'#0c0f16');
@@ -454,6 +500,7 @@ const IDLE_TEXT={
   autohaus:'Rüstung im Ständer. Seite läuft.',
   berater:'Denkt im Dunkeln nach.',
   aufraeumen:'Handschuh abgelegt bis Sonntag.',
+  kartbahn:'Helm am Haken. Wartet auf den nächsten Kartbahn-Chat.',
   chat:'Keine Chat-Session aktiv.',
 };
 
@@ -509,7 +556,7 @@ async function load(){
 function demo(){
   const t=Date.now()/1000, n=new Date().toISOString(), states=['working','idle','working','idle','error'];
   status={heartbeat:n,agents:{},chat:{working:1+Math.floor(t/7)%3,lastActive:n}};
-  ['chef','leadtracker','autohaus','berater','aufraeumen'].forEach((id,i)=>{
+  ['chef','leadtracker','autohaus','berater','aufraeumen','kartbahn'].forEach((id,i)=>{
     status.agents[id]={state:states[(i+Math.floor(t/7))%states.length],text:'Demo-Modus: so sieht das aus.',since:new Date(Date.now()-600e3).toISOString(),lastDone:new Date(Date.now()-i*3600e3).toISOString()};
   });
   lastFetch=new Date(); apply();
