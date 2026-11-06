@@ -21,7 +21,7 @@ STATUS = os.path.join(REPO, "status.json")
 LOCK = os.path.join(BASE, ".lock")
 PUSHLOCK = os.path.join(BASE, ".pushlock")
 LOG = os.path.join(BASE, "hq.log")
-AGENTS = ["chef", "leadtracker", "autohaus", "berater", "aufraeumen", "kartbahn"]
+AGENTS = ["chef", "leadtracker", "autohaus", "berater", "aufraeumen", "kartbahn", "professor"]
 STATES = ["working", "idle", "error"]
 MARKER = re.compile(r"\[hq:([a-z]+)\]")
 # Themen-Agenten: jede Chat-Session zu diesem Thema läuft über diesen Agenten
