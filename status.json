@@ -1,0 +1,46 @@
+{
+ "updated": "2026-11-07T13:08:37+00:00",
+ "heartbeat": "2026-11-07T13:08:37+00:00",
+ "agents": {
+  "kartbahn": {
+   "state": "idle",
+   "since": "2026-11-06T17:11:40+00:00",
+   "text": "Wartet auf den nächsten Kartbahn-Chat.",
+   "lastDone": "2026-11-06T17:11:40+00:00"
+  },
+  "professor": {
+   "state": "idle",
+   "since": "2026-11-06T21:19:04+00:00",
+   "text": "4 Themen notiert, 4 offene Aufgaben",
+   "lastDone": "2026-11-06T21:19:04+00:00"
+  },
+  "autohaus": {
+   "state": "idle",
+   "since": "2026-11-07T08:13:37+00:00",
+   "text": "Seite ok, 23 Autos; Sync-Lücke ~20h",
+   "lastDone": "2026-11-07T08:13:37+00:00"
+  },
+  "berater": {
+   "state": "idle",
+   "since": "2026-11-07T08:13:13+00:00",
+   "text": "Bericht fertig, 1 Rückfrage offen",
+   "lastDone": "2026-11-07T08:13:13+00:00"
+  },
+  "leadtracker": {
+   "state": "idle",
+   "since": "2026-11-07T08:13:05+00:00",
+   "text": "Seite ok, 9 Wiedervorlagen überfällig",
+   "lastDone": "2026-11-07T08:13:05+00:00"
+  },
+  "chef": {
+   "state": "idle",
+   "since": "2026-11-07T08:13:58+00:00",
+   "text": "Bericht fertig, 2 gelb, keine Regelverstöße",
+   "lastDone": "2026-11-07T08:13:58+00:00"
+  }
+ },
+ "chat": {
+  "working": 0,
+  "lastActive": "2026-11-07T09:13:29+00:00"
+ }
+}
