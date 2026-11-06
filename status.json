@@ -1,0 +1,52 @@
+{
+ "updated": "2026-11-21T07:40:43+00:00",
+ "heartbeat": "2026-11-21T07:40:43+00:00",
+ "agents": {
+  "kartbahn": {
+   "state": "idle",
+   "since": "2026-11-15T19:37:11+00:00",
+   "text": "Wartet auf den nächsten Kartbahn-Chat.",
+   "lastDone": "2026-11-15T19:37:11+00:00"
+  },
+  "professor": {
+   "state": "idle",
+   "since": "2026-11-20T21:13:25+00:00",
+   "text": "Ruhiger Tag, 4 Berichte notiert, 3 offene Aufgaben",
+   "lastDone": "2026-11-20T21:13:25+00:00"
+  },
+  "autohaus": {
+   "state": "idle",
+   "since": "2026-11-21T06:58:14+00:00",
+   "text": "Alles grün, 23 Fahrzeuge online",
+   "lastDone": "2026-11-21T06:58:14+00:00"
+  },
+  "berater": {
+   "state": "idle",
+   "since": "2026-11-21T07:38:39+00:00",
+   "text": "Bericht fertig: Leon fragen, Pakete bündeln",
+   "lastDone": "2026-11-21T07:38:39+00:00"
+  },
+  "leadtracker": {
+   "state": "idle",
+   "since": "2026-11-21T06:47:34+00:00",
+   "text": "10 Wiedervorlagen überfällig, Seite läuft",
+   "lastDone": "2026-11-21T06:47:34+00:00"
+  },
+  "chef": {
+   "state": "idle",
+   "since": "2026-11-21T07:40:17+00:00",
+   "text": "Alles grün/gelb, 3 Punkte für Nico",
+   "lastDone": "2026-11-21T07:40:17+00:00"
+  },
+  "aufraeumen": {
+   "state": "idle",
+   "since": "2026-11-15T10:02:36+00:00",
+   "text": "Downloads leer, 3 Fragen offen",
+   "lastDone": "2026-11-15T10:02:36+00:00"
+  }
+ },
+ "chat": {
+  "working": 0,
+  "lastActive": null
+ }
+}
