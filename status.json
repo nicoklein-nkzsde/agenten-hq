@@ -1,0 +1,52 @@
+{
+ "updated": "2026-11-14T17:15:07+00:00",
+ "heartbeat": "2026-11-14T17:15:07+00:00",
+ "agents": {
+  "kartbahn": {
+   "state": "idle",
+   "since": "2026-11-14T14:52:44+00:00",
+   "text": "Wartet auf den nächsten Kartbahn-Chat.",
+   "lastDone": "2026-11-14T14:52:44+00:00"
+  },
+  "professor": {
+   "state": "idle",
+   "since": "2026-11-13T21:06:37+00:00",
+   "text": "1 Tag notiert, 4 offene Aufgaben",
+   "lastDone": "2026-11-13T21:06:37+00:00"
+  },
+  "autohaus": {
+   "state": "idle",
+   "since": "2026-11-14T07:27:07+00:00",
+   "text": "Seite läuft, 20 Autos online, 1 Branch zur Freigabe",
+   "lastDone": "2026-11-14T07:27:07+00:00"
+  },
+  "berater": {
+   "state": "idle",
+   "since": "2026-11-14T07:26:31+00:00",
+   "text": "Bericht fertig: Plan bis Weihnachten, 1 Rückfrage",
+   "lastDone": "2026-11-14T07:26:31+00:00"
+  },
+  "leadtracker": {
+   "state": "idle",
+   "since": "2026-11-14T06:49:21+00:00",
+   "text": "Technik grün, 10 Wiedervorlagen überfällig",
+   "lastDone": "2026-11-14T06:49:21+00:00"
+  },
+  "chef": {
+   "state": "idle",
+   "since": "2026-11-14T07:48:49+00:00",
+   "text": "Alle gelaufen, 2x gelb, 5 Entscheidungen offen",
+   "lastDone": "2026-11-14T07:48:49+00:00"
+  },
+  "aufraeumen": {
+   "state": "idle",
+   "since": "2026-11-08T09:05:42+00:00",
+   "text": "Fertig: 209 MB in Müll, 1 Ordner umbenannt, 5 Fragen",
+   "lastDone": "2026-11-08T09:05:42+00:00"
+  }
+ },
+ "chat": {
+  "working": 1,
+  "lastActive": "2026-11-14T16:50:53+00:00"
+ }
+}
