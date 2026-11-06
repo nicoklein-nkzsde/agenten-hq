@@ -1,0 +1,52 @@
+{
+ "updated": "2026-11-28T09:59:47+00:00",
+ "heartbeat": "2026-11-28T09:59:47+00:00",
+ "agents": {
+  "kartbahn": {
+   "state": "idle",
+   "since": "2026-11-26T18:36:49+00:00",
+   "text": "Wartet auf den nächsten Kartbahn-Chat.",
+   "lastDone": "2026-11-26T18:36:49+00:00"
+  },
+  "professor": {
+   "state": "idle",
+   "since": "2026-11-27T21:13:04+00:00",
+   "text": "Ruhiger Tag, 0 Chats, 4 offene Aufgaben",
+   "lastDone": "2026-11-27T21:13:04+00:00"
+  },
+  "autohaus": {
+   "state": "idle",
+   "since": "2026-11-28T06:53:21+00:00",
+   "text": "Alles grün, 24 Fahrzeuge, Sync heute",
+   "lastDone": "2026-11-28T06:53:21+00:00"
+  },
+  "berater": {
+   "state": "idle",
+   "since": "2026-11-28T07:04:45+00:00",
+   "text": "Bericht fertig: Angebot, Nutzungsrechte, Preisanker",
+   "lastDone": "2026-11-28T07:04:45+00:00"
+  },
+  "leadtracker": {
+   "state": "idle",
+   "since": "2026-11-28T06:34:06+00:00",
+   "text": "Seite ok, 10 Wiedervorlagen überfällig",
+   "lastDone": "2026-11-28T06:34:06+00:00"
+  },
+  "chef": {
+   "state": "idle",
+   "since": "2026-11-28T07:33:40+00:00",
+   "text": "Bericht fertig, 1 Agent gelb, keine Verstöße",
+   "lastDone": "2026-11-28T07:33:40+00:00"
+  },
+  "aufraeumen": {
+   "state": "idle",
+   "since": "2026-11-22T12:42:06+00:00",
+   "text": "Downloads leer, 83 MB Müll, 5 Fragen offen",
+   "lastDone": "2026-11-22T12:42:06+00:00"
+  }
+ },
+ "chat": {
+  "working": 0,
+  "lastActive": null
+ }
+}
