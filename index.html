@@ -86,6 +86,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 .btn{font-family:'Press Start 2P';font-size:10px;padding:14px 12px;width:calc(100% - 8px);margin:4px;text-align:center;background:#2b2150}
 .btn:active{transform:translateY(2px)}
+.side div>.btn{flex:1;width:auto}
 .btn:hover{background:#352a63}
 
 /* Dialog */
@@ -127,7 +128,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     </section>
     <aside class="side">
       <div class="panel px"><div class="ptitle">TEAM <span id="pcount"></span></div><ul id="party"></ul></div>
-      <button class="btn px" id="follow">SPARKI FOLGEN</button>
+      <div style="display:flex;gap:8px"><button class="btn px" id="follow">SPARKI FOLGEN</button><button class="btn px" id="followDog">LUCY FOLGEN</button></div>
       <div class="panel px"><div class="ptitle">WELTGESCHEHEN</div><ol id="log"></ol></div>
     </aside>
   </div>
@@ -508,6 +509,8 @@ function drawAcademy(c,t){
  R(c,178,36,8,8,'#3a7ab8');P(c,180,38,'#4aba4a');P(c,183,40,'#4aba4a');R(c,181,44,2,2,'#5a4030');
  // Boden
  R(c,0,58,260,14,'#5a4030');for(let x=0;x<260;x+=10)R(c,x,58,1,14,'#4a3424');R(c,0,58,260,1,'#6b5040');
+ // Lucys Bettchen + Spielzeug
+ R(c,243,53,16,5,'#6a2a4a');R(c,244,52,14,2,'#c86a96');R(c,246,54,10,2,'#e8a8c8');R(c,232,56,4,2,'#3a8aff');R(c,236,57,2,1,'#e33');
  // Schachtisch
  R(c,22,46,22,2,'#5a4030');R(c,31,48,4,10,'#5a4030');for(let i=0;i<5;i++)for(let j=0;j<2;j++)R(c,23+i*4,44+j*1,2,1,(i+j)%2?'#eee':'#222');
  if(act.name==='chess'&&!w){const m=Math.floor(t*.7)%5;P(c,24+m*4,43,'#fff');P(c,26+((m+2)%5)*4,43,'#111');}
@@ -577,6 +580,7 @@ function say(id,txt,dur=3,col='#fff'){const o=origin(id);let x=o.x+48,y=o.y+12;
 function sayAt(x,y,txt,dur=2.5,follow=null){bubbles.push({x,y,text:txt,until:NOW+dur,follow});}
 function drawBubble(c,b){const w=tw(b.text)+6,h=10;let x=Math.round(b.x),y=Math.round(b.y);
  if(b.follow==='cat'){x=Math.round(cat.x)-4;y=Math.round(cat.y)-22;}
+ if(b.follow==='dog'){x=Math.round(lucy.x)-4;y=Math.round(lucy.y)-29;}
  x=Math.max(2,Math.min(WW-w-2,x));R(c,x-1,y-1,w+2,h+2,'#000');R(c,x,y,w,h,b.col==='#fff'||!b.col?'#fff':b.col);
  R(c,x+4,y+h,3,2,'#fff');P(c,x+4,y+h+2,'#fff');R(c,x+3,y+h,1,3,'#000');R(c,x+7,y+h,1,2,'#000');text(c,b.text,x+3,y+3,'#111');}
 
@@ -604,7 +608,66 @@ function drawCat(c,x,y,face,pose,t){const {B,D,L,Y,EYE,N,E}=CAT;c.save();c.trans
  c.restore();}
 function drawMouse(c,m){c.save();c.translate(Math.round(m.x),Math.round(m.y));if(m.vx<0)c.scale(-1,1);R(c,-2,-2,4,2,'#9a9aa0');P(c,1,-3,'#c99');P(c,2,-2,'#000');R(c,-4,-1,2,1,'#c99');c.restore();}
 
-function pathTo(f,wx){const s=[];if(f!==cat.planF){s.push({type:'walk',x:stairX(FY(cat.planF))});s.push({type:'climb',y:FY(f)});}s.push({type:'walk',x:wx});cat.planF=f;return s;}
+function pathTo(f,wx,p=cat){const s=[];if(f!==p.planF){s.push({type:'walk',x:stairX(FY(p.planF))});s.push({type:'climb',y:FY(f)});}s.push({type:'walk',x:wx});p.planF=f;return s;}
+
+/* =================================================================
+   LUCY – Mamas Hund (Pudel-Border-Collie-Mix, komplett ADHS, hört aber aufs Wort)
+   ================================================================= */
+const DOG={K:'#1b1819',K2:'#2f2a2c',BR:'#6e4b38',GR:'#7d7672'};
+const lucy={x:RX[0]+200,y:FY(4),face:-1,pose:'stand',steps:[],cur:null,room:'professor',planF:4,doing:'wedelt mit dem Schwanz',bark:6};
+let ball=null,fauchCD=0;
+function drawDog(c,x,y,face,pose,t){const {K,K2,BR,GR}=DOG;c.save();c.translate(Math.round(x),Math.round(y));if(face<0)c.scale(-1,1);
+ const wag=Math.floor(t*(pose==='run'?18:12))%2;
+ if(pose==='sit'){R(c,-3,-11,7,11,K);P(c,-2,-10,K2);P(c,1,-8,K2);P(c,-1,-5,K2);R(c,1,-4,2,4,BR);R(c,4,-3,2,3,BR);
+  R(c,0,-18,7,7,K);P(c,1,-18,K2);P(c,4,-18,K2);R(c,0,-17,2,8,K2);R(c,6,-15,3,3,BR);P(c,8,-15,'#000');P(c,5,-16,'#000');P(c,4,-16,BR);
+  R(c,-6,-1,4,1,K);P(c,-6+wag,-2,K);}
+ else if(pose==='lie'){R(c,-7,-5,14,5,K);P(c,-5,-5,K2);P(c,-1,-4,K2);P(c,3,-5,K2);R(c,5,-9,6,6,K);R(c,5,-8,2,6,K2);R(c,10,-6,3,3,BR);P(c,12,-6,'#000');P(c,8,-7,BR);R(c,4,-2,6,2,BR);R(c,-9,-3,3,1,K);}
+ else{const run=pose==='run',f=Math.floor(t*(run?16:11))%2,sn=pose==='sniff';
+  R(c,-6,-10,12,6,K);for(let i=0;i<6;i++)P(c,-5+i*2,-10+(i%2),K2);R(c,-5,-5,10,1,GR);
+  const L=[[-5,f],[-2,1-f],[2,f],[5,1-f]];L.forEach(([lx,o],i)=>{const dx=run?(o?1:-1):(o?0:0);R(c,lx+dx,-4,2,2,K);R(c,lx+dx,-2,2,2,BR);if(!run&&o)R(c,lx,-4,2,1,K2);});
+  const hy=sn?-10:-16;R(c,5,hy,7,7,K);P(c,6,hy,K2);P(c,9,hy,K2);R(c,5,hy+1,2,8,K2);R(c,11,hy+3,3,3,BR);P(c,13,hy+3,'#000');P(c,9,hy+2,'#000');P(c,8,hy+2,BR);P(c,10,hy+5,BR);
+  if(ball&&ball.held)R(c,13,hy+5,2,2,'#e33');
+  if(wag){R(c,-8,-15,2,6,K);P(c,-8,-15,GR);}else{R(c,-10,-14,2,5,K);P(c,-10,-14,GR);P(c,-8,-10,K);}}
+ c.restore();}
+function lucyPlan(){
+ // spielsüchtig: meistens Ball mit einem freien Teammitglied, sonst alleine toben, selten schlafen im Bettchen
+ const players=[...STUDENTS,'chat','professor'].filter(id=>RTS[id].state!=='working'&&(!WK[id]||WK[id].loc==='room')&&id!==lucy.room);
+ let a=wpick({fetch:players.length?6:0,ball:2,zoomies:2,sit:1,bed:1.3});
+ const room=a==='bed'?'professor':(a==='fetch'?pick(players):pick(ORDER.filter(r=>r!==lucy.room)));
+ const o=origin(room),fy=FY(o.f),W=RW(room);lucy.room=room;const st=[];
+ const go=(lx,run=true)=>{const s=pathTo(o.f,o.x+lx,lucy);s.forEach(x=>x.run=run);st.push(...s);};
+ const TO={chef:'zum Architekten',berater:'zum dunklen Ritter',leadtracker:'zum Netzläufer',autohaus:'zum Mechaniker',aufraeumen:'zum Schnipser',kartbahn:'zum Rennfahrer',chat:'zu TARS',sparki:'in Nicos Zimmer',professor:'in die Akademie'};
+ st.push({type:'do',fn:()=>lucy.doing='flitzt '+TO[room]});
+ if(a==='fetch'){const NAME={chef:'Der Architekt',berater:'Der dunkle Ritter',leadtracker:'Der Netzläufer',autohaus:'Der Mechaniker',aufraeumen:'Der Schnipser',kartbahn:'Der Rennfahrer',chat:'TARS',professor:'Der Professor'};
+  const hx=room==='professor'?110:(room==='chat'?40:58),far=room==='professor'?236:118;
+  go(hx+8);st.push({type:'do',fn:()=>{lucy.doing='spielt Ball mit '+NAME[room].replace('Der ','dem ').replace('dunkle ','dunklen ');if(Math.random()<.5)log(`${NAME[room]} spielt mit Lucy Ball.`);}});
+  const rounds=2+Math.floor(Math.random()*2);
+  for(let k=0;k<rounds;k++)st.push({type:'pose',pose:'sit',dur:.8},{type:'do',fn:()=>{say(room,pick(['HOL DEN BALL!','LUCY, FANG!','UND LOS!','WO IST DER BALL?']),1.6);ball={x0:o.x+hx,tx:o.x+far,fy,t0:NOW,held:false};}},
+   {type:'pose',pose:'sit',dur:.5},{type:'walk',x:o.x+far-2,run:true},{type:'do',fn:()=>{if(ball)ball.held=true;}},{type:'walk',x:o.x+hx+8,run:true},
+   {type:'do',fn:()=>{ball=null;say(room,pick(['BRAV, LUCY!','FEIN!','NOCHMAL?','GUTES MÄDCHEN!']),1.6);}},{type:'pose',pose:'stand',dur:.7});
+  lucy.steps=st;return;}
+ if(a==='bed'){go(252,false);st.push({type:'do',fn:()=>{lucy.doing='schläft in ihrem Bettchen';}},{type:'pose',pose:'lie',dur:25+Math.random()*20},{type:'do',fn:()=>{sayAt(0,0,'!',1,'dog');lucy.doing='ist wach und will spielen';}});lucy.steps=st;return;}
+ if(a==='zoomies'){go(18);st.push({type:'do',fn:()=>{lucy.doing='hat die Zoomies';sayAt(0,0,'WUFF!',1.5,'dog');}});
+  for(let k=0;k<3;k++)st.push({type:'walk',x:o.x+W-14,run:true},{type:'walk',x:o.x+14,run:true});st.push({type:'pose',pose:'sit',dur:1.5});}
+ else if(a==='ball'){go(20);st.push({type:'do',fn:()=>{lucy.doing='spielt Ball';ball={x0:o.x+24,tx:o.x+W-26,fy,t0:NOW,held:false};}},{type:'pose',pose:'sit',dur:.9},
+  {type:'walk',x:o.x+W-30,run:true},{type:'do',fn:()=>{if(ball)ball.held=true;}},{type:'walk',x:o.x+28,run:true},{type:'do',fn:()=>{ball=null;sayAt(0,0,'WUFF!',1.5,'dog');}},{type:'pose',pose:'stand',dur:1.5});}
+ else if(a==='sit'){go(W/2);st.push({type:'do',fn:()=>{lucy.doing='macht brav Sitz';const who=AG[room]&&room!=='chat'?room:null;if(who&&RTS[who].state!=='working')say(who,'LUCY, SITZ!',2);else sayAt(lucy.x-10,lucy.y-44,'SITZ!',2);}},
+  {type:'pose',pose:'stand',dur:.4},{type:'pose',pose:'sit',dur:4},{type:'do',fn:()=>{sayAt(lucy.x-8,lucy.y-44,'BRAV!',2);if(Math.random()<.4)log('Lucy hat aufs Wort Sitz gemacht. Brav!');}},{type:'pose',pose:'sit',dur:1.5});}
+ else if(a==='sniff'){go(16);st.push({type:'do',fn:()=>lucy.doing='schnüffelt alles ab'},{type:'walk',x:o.x+W-20,slow:true,pose:'sniff'},{type:'pose',pose:'stand',dur:1});}
+ else if(a==='nap'){go(W/2);st.push({type:'do',fn:()=>lucy.doing='versucht ein Nickerchen (klappt nicht lang)'},{type:'pose',pose:'lie',dur:6},{type:'do',fn:()=>sayAt(0,0,'!',1,'dog')});}
+ lucy.steps=st;}
+function lucyUpdate(dt){
+ if(!lucy.cur){lucy.cur=lucy.steps.shift();if(!lucy.cur){lucyPlan();return;}lucy.cur.t=0;}
+ const s=lucy.cur;s.t+=dt;const next=()=>{lucy.cur=null;};
+ if(s.type==='walk'){const sp=(s.run?72:s.slow?12:36)*dt;lucy.pose=s.pose||(s.run?'run':'walk');const dx=s.x-lucy.x;if(Math.abs(dx)<=sp){lucy.x=s.x;next();}else{lucy.x+=Math.sign(dx)*sp;lucy.face=Math.sign(dx);}
+  lucy.bark-=dt;if(lucy.bark<0){lucy.bark=10+Math.random()*20;if(Math.random()<.5)sayAt(0,0,pick(['WUFF!','WUFF WUFF!']),1.4,'dog');}}
+ else if(s.type==='climb'){lucy.pose='run';const dy=s.y-lucy.y,sp=48*dt;if(Math.abs(dy)<=sp){lucy.y=s.y;next();}else lucy.y+=Math.sign(dy)*sp;const nx=stairX(lucy.y);if(nx!==lucy.x)lucy.face=nx>lucy.x?1:-1;lucy.x=nx;}
+ else if(s.type==='pose'){lucy.pose=s.pose;if(s.t>=s.dur)next();}
+ else if(s.type==='do'){s.fn();next();}
+ // Lucy trifft Sparki
+ if(NOW>fauchCD&&Math.abs(lucy.y-cat.y)<8&&Math.abs(lucy.x-cat.x)<14){fauchCD=NOW+45;sayAt(0,0,'FAUCH!',2,'cat');setTimeout(()=>sayAt(0,0,'WUFF?',1.6,'dog'),600);log('Lucy wollte mit Sparki spielen. Sparki faucht.');}
+}
+function drawBall(c){if(!ball||ball.held)return;const p=Math.min(1,(NOW-ball.t0)/.8);R(c,ball.x0+(ball.tx-ball.x0)*p,ball.fy-3-Math.sin(Math.PI*p)*24,2,2,'#e33');}
 const ROOMNAME={chef:'beim Architekten',berater:'beim dunklen Ritter',leadtracker:'beim Netzläufer',autohaus:'beim Mechaniker',aufraeumen:'beim Schnipser',kartbahn:'beim Rennfahrer',chat:'bei TARS',sparki:'in ihrem Revier',professor:'in der Akademie'};
 const OWNER={chef:'Der Architekt',berater:'Der dunkle Ritter',leadtracker:'Der Netzläufer',autohaus:'Der Mechaniker',aufraeumen:'Der Schnipser',kartbahn:'Der Rennfahrer'};
 function catPlan(){
@@ -744,6 +807,7 @@ function render(t,dt){
  car.next-=dt;if(car.x<-50&&car.next<0){car.x=WW+10;car.next=25+Math.random()*30;}
  if(car.x>-50){car.x-=40*dt;const x=car.x,b=GY+14;R(c,x,b,30,6,'#14425A');R(c,x+6,b-4,15,4,'#14425A');R(c,x+8,b-3,5,3,'#9fd3e6');R(c,x+14,b-3,6,3,'#9fd3e6');R(c,x,b+2,30,1,'#A8501A');R(c,x+3,b+5,6,5,'#0c0c0c');R(c,x+21,b+5,6,5,'#0c0c0c');P(c,x,b+1,'#ffd27a');}
  for(const m of mice)drawMouse(c,m);
+ drawBall(c);drawDog(c,lucy.x,lucy.y,lucy.face,lucy.pose,t);if(lucy.pose==='lie'&&lucy.doing.includes('schläft'))zzz(c,lucy.x+6,lucy.y-12,t);
  drawCat(c,cat.x,cat.y,cat.face,cat.pose,t);
  for(let i=bubbles.length-1;i>=0;i--){if(bubbles[i].until<NOW)bubbles.splice(i,1);else drawBubble(c,bubbles[i]);}
 }
@@ -759,11 +823,11 @@ let ovMode=null;   // Raum-ID oder 'cat'
 let lastT=performance.now()/1000,acc=0;
 function frame(ms){const t=ms/1000;let dt=Math.min(.1,t-lastT);lastT=t;NOW=t;
  acc+=dt;if(acc>=1/30){
-  catUpdate(acc);miceUpdate(acc);walkersUpdate(acc);acc=0;
+  catUpdate(acc);lucyUpdate(acc);miceUpdate(acc);walkersUpdate(acc);acc=0;
   render(t,1/30);
   fit(map,WH/WW);mctx.imageSmoothingEnabled=false;mctx.drawImage(world,0,0,map.width,map.height);
   if(ovMode){fit(zoom,80/140);zctx.imageSmoothingEnabled=false;let cx,cy,cw=140;
-   if(ovMode==='cat'){cx=cat.x;cy=cat.y-20;}else{const o=origin(ovMode);cw=ovMode==='professor'?266:140;cx=o.x+RW(ovMode)/2;cy=o.y+34;}
+   if(ovMode==='cat'){cx=cat.x;cy=cat.y-20;}else if(ovMode==='dog'){cx=lucy.x;cy=lucy.y-22;}else{const o=origin(ovMode);cw=ovMode==='professor'?266:140;cx=o.x+RW(ovMode)/2;cy=o.y+34;}
    const ch=cw*80/140,sx=Math.max(0,Math.min(WW-cw,cx-cw/2)),sy=Math.max(0,Math.min(WH-ch,cy-ch/2));zctx.drawImage(world,sx,sy,cw,ch,0,0,zoom.width,zoom.height);}
  }
  requestAnimationFrame(frame);}
@@ -771,12 +835,12 @@ requestAnimationFrame(frame);
 
 /* ---------- Team-Liste ---------- */
 const party=document.getElementById('party');const prow={};
-[...AGENTS.map(a=>a.id),'sparki'].forEach(id=>{
+[...AGENTS.map(a=>a.id),'sparki','lucy'].forEach(id=>{
  const li=document.createElement('li');li.tabIndex=0;const a=AG[id];
  li.innerHTML=`<canvas width="16" height="16"></canvas><div><div class="pn" style="color:${a?a.accent:'#ff6ec7'}">${a?a.name:'SPARKI'}</div><div class="pa"></div></div><span class="chip">PAUSE</span>`;
- li.onclick=()=>openOv(id==='sparki'?'cat':id);li.onkeydown=e=>{if(e.key==='Enter')li.onclick();};
+ li.onclick=()=>openOv(id==='sparki'?'cat':id==='lucy'?'dog':id);li.onkeydown=e=>{if(e.key==='Enter')li.onclick();};
  party.appendChild(li);const pc=li.querySelector('canvas').getContext('2d');
- if(id==='sparki'){drawCat(pc,8,15,1,'sit',0);} else if(id==='chat'){for(let i=0;i<3;i++){R(pc,2+i*4,2,4,14,'#8d939c');R(pc,2+i*4,2,1,14,'#a7adb5');}R(pc,3,5,10,3,'#0a0e12');R(pc,4,6,6,1,'#7fe7ff');}
+ if(id==='sparki'){drawCat(pc,8,15,1,'sit',0);} else if(id==='lucy'){drawDog(pc,5,18,1,'sit',0);} else if(id==='chat'){for(let i=0;i<3;i++){R(pc,2+i*4,2,4,14,'#8d939c');R(pc,2+i*4,2,1,14,'#a7adb5');}R(pc,3,5,10,3,'#0a0e12');R(pc,4,6,6,1,'#7fe7ff');}
  else PAL[id].head(pc,3,4,0,true);
  prow[id]={pa:li.querySelector('.pa'),chip:li.querySelector('.chip')};
 });
@@ -820,8 +884,8 @@ function actText(id){const r=RTS[id];if(r.state==='working')return r.text||'arbe
  const a=r.act;if(!a)return 'chillt';let n=a.name;if(n==='coffee'&&NOW-a.start>8.6)n='drink';return ACT_TXT[n]||n;}
 function refreshUI(){
  for(const a of AGENTS){const p=prow[a.id],r=RTS[a.id];p.pa.textContent=actText(a.id);p.pa.classList.toggle('work',r.state==='working');p.chip.className='chip '+r.state;p.chip.textContent=LABEL[r.state];}
- prow.sparki.pa.textContent=cat.doing;prow.sparki.chip.className='chip';prow.sparki.chip.textContent='KATZE';
- document.getElementById('pcount').textContent=`${AGENTS.length+1}`;
+ prow.lucy.pa.textContent=lucy.doing;prow.lucy.chip.className='chip';prow.lucy.chip.textContent='HUND';prow.sparki.pa.textContent=cat.doing;prow.sparki.chip.className='chip';prow.sparki.chip.textContent='KATZE';
+ document.getElementById('pcount').textContent=`${AGENTS.length+2}`;
  const d=new Date();document.getElementById('sClock').textContent=`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
  if(ovMode)fillDlg();
 }
@@ -836,6 +900,8 @@ function openOv(id){ovMode=id;ov.classList.add('open');fillDlg();}
 function closeOv(){ovMode=null;ov.classList.remove('open');}
 function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
 function fillDlg(){
+ if(ovMode==='dog'){dlg.innerHTML=`<h3 style="color:#e8a8c8">LUCY</h3><div class="role">Mamas Hund · Pudel-Border-Collie-Mix · zu Besuch</div>
+  <div class="now"><b>JETZT</b>${esc(lucy.doing)}<span class="cursor"></span></div><div class="lore">Komplett spielsüchtig und voller Energie. Spielt eigentlich durchgehend Ball mit jedem, der gerade Zeit hat, oder schläft in ihrem Bettchen in der Akademie. Hört trotzdem aufs Wort. Mit Sparki klappt das Spielen noch nicht so ganz.</div>`;return;}
  if(ovMode==='cat'||ovMode==='sparki'){dlg.innerHTML=`<h3 style="color:#ff6ec7">SPARKI</h3><div class="role">Bürokatze · hat hier das Sagen</div>
   <div class="now"><b>JETZT</b>${esc(cat.doing)}<span class="cursor"></span></div><div class="lore">Läuft durchs ganze Haus, jagt Mäuse, schmeißt Tassen vom Tisch und setzt sich am liebsten auf Tastaturen, an denen gerade gearbeitet wird. Die Kamera folgt ihr.</div>`;return;}
  const a=AG[ovMode],r=RTS[ovMode];const nx=fmtNext(nextRun(a.plan))||a.planText;
@@ -850,7 +916,7 @@ function step(d){const ids=[...ORDER];const cur=ovMode==='cat'?'sparki':ovMode;l
 document.getElementById('close').onclick=closeOv;document.getElementById('prev').onclick=()=>step(-1);document.getElementById('next').onclick=()=>step(1);
 ov.onclick=e=>{if(e.target===ov)closeOv();};
 document.addEventListener('keydown',e=>{if(!ovMode)return;if(e.key==='Escape')closeOv();if(e.key==='ArrowLeft')step(-1);if(e.key==='ArrowRight')step(1);});
-document.getElementById('follow').onclick=()=>openOv('cat');
+document.getElementById('follow').onclick=()=>openOv('cat');document.getElementById('followDog').onclick=()=>openOv('dog');
 map.addEventListener('click',e=>{const r=map.getBoundingClientRect(),wx=(e.clientX-r.left)/r.width*WW,wy=(e.clientY-r.top)/r.height*WH;
  if(Math.hypot(wx-cat.x,wy-(cat.y-6))<10){openOv('cat');return;}
  for(const id of ORDER){const o=origin(id);if(wx>=o.x&&wx<o.x+RW(id)&&wy>=o.y-6&&wy<o.y+72){openOv(id==='sparki'?'cat':id);return;}}});
