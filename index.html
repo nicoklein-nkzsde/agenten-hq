@@ -448,17 +448,43 @@ function drawTARSRoom(c,t,w,n,act,ast){
  return tx;
 }
 /* Sparkis Revier */
+/* Sparkis Revier = Nicos Zimmer: lila Licht, weißer Schreibtisch, PC mit lila Lüftern, Bett mit grauer Decke, TV mit Ambilight */
 function drawSparkiRoom(c,t){
- R(c,0,0,128,58,'#3a2638');for(let y=4;y<56;y+=8)for(let x=(y%16?4:0);x<128;x+=8){P(c,x,y,'#4a3248');P(c,x+1,y+1,'#4a3248');}
- R(c,50,6,28,22,'#2a1a28');R(c,52,8,24,18,'#141a3a');R(c,68,11,4,4,'#f3efd6');for(let i=0;i<6;i++)P(c,53+rnd(i+5)*22,9+rnd(i+6)*15,'#ccd');R(c,63,8,1,18,'#2a1a28');
- R(c,8,6,34,10,'#1a0f1a');text(c,'SPARKI',10,8,Math.floor(t*2)%7?'#ff6ec7':'#7a2a5a');
- R(c,105,18,4,40,'#c9a76a');for(let y=20;y<56;y+=3)R(c,105,y,4,1,'#a88a50');R(c,96,34,20,3,'#7a5c33');R(c,98,18,16,3,'#7a5c33');R(c,94,55,26,3,'#7a5c33');
- const sw=Math.round(Math.sin(t*2)*2);R(c,112,37,1,4+sw,'#e8e4da');R(c,111,41+sw,3,3,'#ff6ec7');
- floor(c,'#4a3530','#3e2c28');
- R(c,8,52,22,6,'#a0522d');R(c,7,51,24,2,'#b8693d');R(c,10,51,18,2,'#d8c8a8');
- R(c,38,55,10,3,'#c33');R(c,39,54,8,1,'#a52');P(c,41,54,'#7a4a1a');P(c,44,54,'#7a4a1a');R(c,50,56,6,2,'#5ad1ff');
- R(c,60,50,8,8,'#a0522d');R(c,62,42,2,8,'#3a9a3a');R(c,58,44,4,2,'#4aba4a');R(c,64,40,4,2,'#4aba4a');R(c,61,38,3,2,'#4aba4a');
- R(c,120,50,6,8,'#120a10');R(c,121,49,4,1,'#120a10');
+ R(c,0,0,128,58,'#140b24');
+ c.globalAlpha=.16;for(let i=0;i<22;i++)R(c,0,i*2+8,60-i,2,'#a64dff');c.globalAlpha=1;
+ R(c,0,0,128,1,'#d07bff');c.globalAlpha=.25;R(c,0,1,128,3,'#b45cff');c.globalAlpha=1;
+ // Neon über dem Bett
+ R(c,62,8,30,9,'#0d0718');text(c,'SPARKI',65,10,Math.floor(t*2)%9?'#ff6ec7':'#6a2a5a');
+ // TV mit Ambilight (gegenüber vom Bett)
+ const hue=['#ff4fd8','#5a7cff','#ff9a3a','#5affc8'][Math.floor(t/3)%4],hue2=['#8a5cff','#ff5a7a','#ffd84a','#4ac8ff'][Math.floor(t/3)%4];
+ c.globalAlpha=.22;R(c,104,10,24,24,hue);c.globalAlpha=.12;R(c,100,6,28,32,hue2);c.globalAlpha=1;
+ R(c,108,14,19,13,'#0a0a0e');for(let y=0;y<11;y++){c.fillStyle=mix(hue,hue2,y/11);c.fillRect(109,15+y,17,1);}
+ for(let i=0;i<3;i++)R(c,110+((Math.floor(t*6)+i*6)%16),17+i*3,2,1,'rgba(255,255,255,.6)');
+ R(c,108,46,19,12,'#1c1430');R(c,108,46,19,1,'#3a2a5a');R(c,113,50,9,1,'#0a0712');
+ floor(c,'#1e1530','#191127');
+ // Schreibtisch (weiß) mit Setup
+ c.globalAlpha=.2;R(c,0,40,52,6,'#b45cff');c.globalAlpha=1;
+ R(c,1,44,50,3,'#ece6f4');R(c,1,47,50,1,'#b8a8d0');R(c,3,47,2,11,'#d8d2e2');R(c,46,47,2,11,'#d8d2e2');R(c,4,56,8,1,'#d8d2e2');R(c,40,56,8,1,'#d8d2e2');
+ // PC: Glasgehäuse, lila Lüfter, Kamera-Rig obendrauf
+ R(c,2,22,15,22,'#0c0a12');R(c,3,23,13,20,'#1a1328');
+ for(let i=0;i<3;i++){const fy=24+i*6;R(c,10,fy,5,5,'#c06cff');R(c,11,fy+1,3,3,'#1a1328');const a=t*8+i;P(c,12+Math.round(Math.cos(a)*1.4),fy+2+Math.round(Math.sin(a)*1.4),'#f4d8ff');}
+ R(c,4,25,5,3,'#2a2a30');R(c,4,31,5,1,'#ff6ec7');R(c,4,34,5,6,'#24202e');P(c,6,36,'#c06cff');R(c,16,23,1,20,'#c06cff');
+ R(c,4,16,10,6,'#1a1a1e');R(c,12,17,4,4,'#2a2a30');R(c,13,18,2,2,'#5a6a8a');R(c,6,13,4,3,'#222');R(c,3,18,2,3,'#333');
+ // Monitor mit Wellen-Wallpaper
+ R(c,19,25,24,16,'#111');R(c,20,26,22,14,'#d8d0c4');
+ for(let x=0;x<22;x++){const y1=Math.round(5+Math.sin(x*.25+1)*3),y2=Math.round(9+Math.sin(x*.2)*3);P(c,20+x,26+y1,'#8a8278');P(c,20+x,27+y1,'#b0a89c');P(c,20+x,26+y2,'#6a645c');}
+ R(c,29,41,4,3,'#9a9aa6');R(c,25,43,12,1,'#9a9aa6');
+ // Tastatur (leuchtend), rotes Mauspad, weiße Maus, Kopfhörer
+ R(c,20,42,13,2,'#16121e');for(let i=0;i<6;i++)P(c,21+i*2,42,Math.floor(t*2+i)%4?'#8a7aff':'#c8b8ff');
+ R(c,34,43,13,1,'#b01a2a');R(c,40,42,3,1,'#f4f4f8');R(c,44,40,4,1,'#222');R(c,44,41,1,3,'#222');R(c,47,41,1,3,'#e8e8f0');
+ // Gaming-Stuhl (dreht dem Bett den Rücken zu)
+ R(c,52,26,3,22,'#1c1824');R(c,53,27,1,18,'#c06cff');R(c,42,46,13,3,'#1c1824');R(c,47,49,3,6,'#15171d');R(c,42,55,13,2,'#15171d');
+ // Bett mit grauer Kuscheldecke
+ R(c,58,34,3,24,'#2a2238');R(c,58,48,48,10,'#2a2238');R(c,61,44,45,5,'#e4e4ee');
+ R(c,61,41,10,5,'#f0f0f6');R(c,62,41,8,1,'#ffffff');
+ R(c,70,42,36,7,'#9c9caa');for(let i=0;i<18;i++)P(c,71+rnd(i+30)*34,42+rnd(i+31)*6,i%2?'#b4b4c2':'#8a8a98');R(c,70,48,36,2,'#8a8a98');
+ // Napf
+ R(c,96,56,7,2,'#c06cff');P(c,98,55,'#7a4a1a');P(c,100,55,'#7a4a1a');
 }
 /* Akademie (260 breit) */
 const SEATX=[142,162,182,202,222,242];
@@ -557,17 +583,22 @@ function drawBubble(c,b){const w=tw(b.text)+6,h=10;let x=Math.round(b.x),y=Math.
 /* =================================================================
    SPARKI
    ================================================================= */
-const CAT={B:'#8a8f99',D:'#5e636c',L:'#e2e4ea',EYE:'#9be35a',N:'#e89aa6'};
-const cat={x:RX[1]+20,y:FY(3),f:3,face:1,pose:'sleep',steps:[],cur:null,room:'sparki',doing:'schläft im Körbchen',planF:3,meow:0};
-function drawCat(c,x,y,face,pose,t){const {B,D,L,EYE,N}=CAT;c.save();c.translate(Math.round(x),Math.round(y));if(face<0)c.scale(-1,1);
- if(pose==='sit'||pose==='paw'){R(c,-3,-8,5,8,B);R(c,0,-6,2,5,L);P(c,-2,-7,D);P(c,-2,-5,D);R(c,-1,-13,5,5,B);P(c,-1,-14,B);P(c,3,-14,B);P(c,2,-12,EYE);P(c,4,-11,N);P(c,3,-10,L);
-  const s=Math.round(Math.sin(t*3));R(c,-7,-1,4,1,B);P(c,-7,-2+s,B);
-  if(pose==='paw'){R(c,2,-6,4,1,B);P(c,6,-7,L);}else R(c,1,-1,2,1,L);}
- else if(pose==='sleep'){R(c,-5,-4,10,4,B);R(c,-4,-5,8,1,B);P(c,-2,-4,D);P(c,0,-4,D);R(c,2,-5,4,3,B);P(c,2,-6,B);P(c,5,-6,B);P(c,4,-4,D);R(c,-5,-1,9,1,D);}
- else if(pose==='eat'){R(c,-5,-6,9,4,B);P(c,-3,-6,D);P(c,-1,-6,D);R(c,3,-5,5,4,B);P(c,3,-6,B);P(c,6,-6,B);P(c,6,-4,EYE);R(c,-4,-2,1,2,B);R(c,2,-2,1,2,B);R(c,-7,-9,1,4,B);}
+/* Sparki: Schildpatt (dunkel mit rost- und beigefarbenen Flecken), gelbgrüne Augen */
+const CAT={B:'#2e211b',D:'#140e0c',L:'#b8692c',Y:'#d9a86c',EYE:'#d8d05a',N:'#1a1210',E:'#c98f86'};
+const cat={x:RX[1]+86,y:RT(3)+42,f:3,face:1,pose:'sleep',cur:null,room:'sparki',doing:'schläft auf Nicos Bett',planF:3,meow:0,
+ steps:[{type:'pose',pose:'sleep',dur:10},{type:'pose',pose:'sit',dur:2},{type:'jump',x:RX[1]+66,y:FY(3),dur:.5,h:6}]};
+function drawCat(c,x,y,face,pose,t){const {B,D,L,Y,EYE,N,E}=CAT;c.save();c.translate(Math.round(x),Math.round(y));if(face<0)c.scale(-1,1);
+ if(pose==='sit'||pose==='paw'){R(c,-3,-8,5,8,B);P(c,-2,-7,L);P(c,-1,-5,Y);P(c,0,-7,L);P(c,1,-4,L);P(c,-2,-3,Y);P(c,0,-2,D);
+  R(c,-1,-13,5,5,B);P(c,-1,-14,B);P(c,3,-14,B);P(c,0,-13,E);P(c,0,-12,L);P(c,1,-13,Y);P(c,2,-12,EYE);P(c,3,-10,N);P(c,1,-10,Y);
+  const s=Math.round(Math.sin(t*3));R(c,-7,-1,4,1,B);P(c,-6,-1,L);P(c,-7,-2+s,D);
+  if(pose==='paw'){R(c,2,-6,4,1,B);P(c,6,-7,D);}else R(c,1,-1,2,1,D);}
+ else if(pose==='sleep'){R(c,-5,-4,10,4,B);R(c,-4,-5,8,1,B);P(c,-3,-4,L);P(c,-1,-5,Y);P(c,0,-3,L);P(c,-4,-2,Y);P(c,2,-3,L);
+  R(c,2,-5,4,3,B);P(c,2,-6,B);P(c,5,-6,B);P(c,3,-5,L);P(c,4,-4,D);R(c,-5,-1,9,1,D);P(c,-2,-1,L);
+  const br=Math.sin(t*1.5)>0?1:0;R(c,-4,-5-br,6,1,B);}
+ else if(pose==='eat'){R(c,-5,-6,9,4,B);P(c,-3,-6,L);P(c,-1,-5,Y);P(c,1,-6,L);R(c,3,-5,5,4,B);P(c,3,-6,B);P(c,6,-6,B);P(c,4,-4,L);P(c,6,-4,EYE);R(c,-4,-2,1,2,B);R(c,2,-2,1,2,B);R(c,-7,-9,1,4,B);P(c,-7,-7,L);}
  else {const f=Math.floor(t*(pose==='run'?14:9))%2,j=pose==='jump';
-  R(c,-5,-6,10,4,B);P(c,-3,-6,D);P(c,-1,-6,D);P(c,1,-6,D);R(c,-4,-3,7,1,L);
-  R(c,4,-9,5,5,B);P(c,4,-10,B);P(c,8,-10,B);P(c,5,-10,N);P(c,7,-8,EYE);P(c,9,-7,N);P(c,8,-6,L);
+  R(c,-5,-6,10,4,B);P(c,-4,-6,L);P(c,-2,-5,Y);P(c,-1,-6,L);P(c,1,-5,L);P(c,2,-6,Y);P(c,-3,-4,L);P(c,3,-4,Y);R(c,-4,-3,7,1,D);P(c,0,-3,L);
+  R(c,4,-9,5,5,B);P(c,4,-10,B);P(c,8,-10,B);P(c,5,-10,E);P(c,5,-9,L);P(c,6,-9,Y);P(c,7,-8,EYE);P(c,9,-7,N);P(c,5,-6,L);
   if(j){R(c,-6,-3,2,1,B);R(c,5,-4,2,1,B);}else if(f){R(c,-4,-2,1,2,B);R(c,2,-2,1,2,B);R(c,-2,-2,1,1,D);R(c,4,-2,1,1,D);}else{R(c,-3,-2,1,2,B);R(c,3,-2,1,2,B);R(c,-5,-2,1,1,D);R(c,1,-2,1,1,D);}
   if(f){R(c,-7,-10,1,4,B);P(c,-6,-6,B);}else{R(c,-8,-9,1,3,B);R(c,-7,-7,2,1,B);}}
  c.restore();}
@@ -577,9 +608,9 @@ function pathTo(f,wx){const s=[];if(f!==cat.planF){s.push({type:'walk',x:stairX(
 const ROOMNAME={chef:'beim Architekten',berater:'beim dunklen Ritter',leadtracker:'beim Netzläufer',autohaus:'beim Mechaniker',aufraeumen:'beim Schnipser',kartbahn:'beim Rennfahrer',chat:'bei TARS',sparki:'in ihrem Revier',professor:'in der Akademie'};
 const OWNER={chef:'Der Architekt',berater:'Der dunkle Ritter',leadtracker:'Der Netzläufer',autohaus:'Der Mechaniker',aufraeumen:'Der Schnipser',kartbahn:'Der Rennfahrer'};
 function catPlan(){
- const rooms=ORDER.filter(r=>r!==cat.room);const room=Math.random()<.18&&cat.room!=='sparki'?'sparki':pick(rooms);
+ const rooms=ORDER.filter(r=>r!==cat.room);const room=Math.random()<.35&&cat.room!=='sparki'?'sparki':pick(rooms);
  const o=origin(room),fy=FY(o.f);const opts=[];
- if(room==='sparki')opts.push('eat','sleepbed','sit');
+ if(room==='sparki')opts.push('sleepbed','sleepbed','bedtv','eat');
  else{opts.push('sit','miau','mouse','mouse');if(DESK_ROOMS.includes(room)){if(cups[room].state==='ok')opts.push('cup','cup','cup');if(RTS[room].state==='working')opts.push('keyboard','keyboard');}opts.push('sleep');}
  const a=pick(opts);const st=[];cat.room=room;
  const go=(lx)=>st.push(...pathTo(o.f,o.x+lx));
@@ -594,8 +625,9 @@ function catPlan(){
  else if(a==='sit'){go(20+Math.random()*80);st.push({type:'do',fn:()=>cat.doing='putzt sich'},{type:'pose',pose:'sit',dur:6});}
  else if(a==='miau'){go(20+Math.random()*80);st.push({type:'do',fn:()=>{cat.doing='miaut';sayAt(0,0,'MIAU!',2.5,'cat');}},{type:'pose',pose:'sit',dur:3});}
  else if(a==='sleep'){go(20+Math.random()*30);st.push({type:'do',fn:()=>cat.doing='macht ein Nickerchen '+ROOMNAME[room]},{type:'pose',pose:'sleep',dur:14});}
- else if(a==='eat'){go(32);st.push({type:'do',fn:()=>cat.doing='frisst'},{type:'pose',pose:'eat',dur:5},{type:'pose',pose:'sit',dur:2});}
- else if(a==='sleepbed'){go(19);st.push({type:'jump',x:o.x+19,y:o.y+57,dur:.4,h:4},{type:'do',fn:()=>cat.doing='schläft im Körbchen'},{type:'pose',pose:'sleep',dur:20},{type:'jump',x:o.x+30,y:fy,dur:.4,h:4});}
+ else if(a==='eat'){go(91);st.push({type:'do',fn:()=>cat.doing='frisst aus ihrem Napf'},{type:'pose',pose:'eat',dur:5},{type:'pose',pose:'sit',dur:2});}
+ else if(a==='sleepbed'){go(66);st.push({type:'jump',x:o.x+86,y:o.y+42,dur:.6,h:10},{type:'do',fn:()=>{cat.doing='schläft auf Nicos Bett';if(Math.random()<.5)log('Sparki hat sich auf Nicos Bett eingerollt.');}},{type:'pose',pose:'sleep',dur:28+Math.random()*20},{type:'pose',pose:'sit',dur:2},{type:'jump',x:o.x+66,y:fy,dur:.5,h:6});}
+ else if(a==='bedtv'){go(66);st.push({type:'jump',x:o.x+92,y:o.y+42,dur:.6,h:10},{type:'do',fn:()=>cat.doing='guckt vom Bett aus Fernsehen'},{type:'pose',pose:'sit',dur:12},{type:'jump',x:o.x+66,y:fy,dur:.5,h:6});}
  cat.steps=st;
 }
 function catUpdate(dt){
@@ -754,7 +786,7 @@ const logEl=document.getElementById('log');
 function log(msg){const li=document.createElement('li');li.className='new';const d=new Date();
  li.innerHTML=`<time>${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}</time>`;li.appendChild(document.createTextNode(msg));
  logEl.prepend(li);while(logEl.children.length>7)logEl.lastChild.remove();}
-log('Sparki ist aufgewacht und streckt sich.');
+log('Sparki liegt auf Nicos Bett und schnurrt.');
 
 /* ---------- Zeit ---------- */
 function ago(iso){if(!iso)return '—';const s=Math.max(0,(Date.now()-new Date(iso))/1000);if(s<60)return 'gerade eben';if(s<3600)return `vor ${Math.floor(s/60)} Min`;if(s<86400)return `vor ${Math.floor(s/3600)} Std`;const d=Math.floor(s/86400);return d===1?'gestern':`vor ${d} Tagen`;}
